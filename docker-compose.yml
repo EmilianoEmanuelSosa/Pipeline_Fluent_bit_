@@ -8,47 +8,47 @@ services:
     hostname: zookeeper
     command:
       ["sh", "-c", "bin/zookeeper-server-start.sh config/zookeeper.properties"]
-    ports:
-      - "2181:2181"
-    environment:
-      LOG_DIR: /tmp/logs
+  ports:
+    - "2181:2181"
+  environment:
+    LOG_DIR: /tmp/logs
 
-  broker:
-    container_name: kafka
-    image: quay.io/strimzi/kafka:0.31.1-kafka-3.1.2
-    hostname: broker
-    command:
-      [
-        "sh",
-        "-c",
-        "bin/kafka-server-start.sh config/server.properties --override listeners=$${KAFKA_LISTENERS} --override advertised.listeners=$${KAFKA_ADVERTISED_LISTENERS} --override zookeeper.connect=$${KAFKA_ZOOKEEPER_CONNECT} --override listener.security.protocol.map=$${KAFKA_LISTENER_SECURITY_PROTOCOL_MAP} --override inter.broker.listener.name=$${KAFKA_INTER_BROKER_LISTENER_NAME}",
-      ]
-    depends_on:
-      - zookeeper
-    ports:
-      - "29092:29092"
-    environment:
-      LOG_DIR: "/tmp/logs"
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT
-      KAFKA_ADVERTISED_LISTENERS: INSIDE://broker:9092,OUTSIDE://localhost:29092
-      KAFKA_LISTENERS: INSIDE://broker:9092,OUTSIDE://broker:29092
-      KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
+broker:
+  container_name: kafka
+  image: quay.io/strimzi/kafka:0.31.1-kafka-3.1.2
+  hostname: broker
+  command:
+    [
+      "sh",
+      "-c",
+      "bin/kafka-server-start.sh config/server.properties --override listeners=$${KAFKA_LISTENERS} --override advertised.listeners=$${KAFKA_ADVERTISED_LISTENERS} --override zookeeper.connect=$${KAFKA_ZOOKEEPER_CONNECT} --override listener.security.protocol.map=$${KAFKA_LISTENER_SECURITY_PROTOCOL_MAP} --override inter.broker.listener.name=$${KAFKA_INTER_BROKER_LISTENER_NAME}",
+    ]
+  depends_on:
+    - zookeeper
+  ports:
+    - "29092:29092"
+  environment:
+    LOG_DIR: "/tmp/logs"
+    KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+    KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT
+    KAFKA_ADVERTISED_LISTENERS: INSIDE://broker:9092,OUTSIDE://localhost:29092
+    KAFKA_LISTENERS: INSIDE://broker:9092,OUTSIDE://broker:29092
+    KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
 
-  kafka-ui:
-    container_name: kafka-ui
-    image: provectuslabs/kafka-ui:v0.4.0
-    hostname: kafka-ui
-    depends_on:
-      - broker
-    ports:
-      - "8082:8080"
-    environment:
-      KAFKA_CLUSTERS_0_NAME: "kafka"
-      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: "broker:9092"
-      KAFKA_CLUSTERS_0_ZOOKEEPER: "zookeeper:2181"
+kafka-ui:
+  container_name: kafka-ui
+  image: provectuslabs/kafka-ui:v0.4.0
+  hostname: kafka-ui
+  depends_on:
+    - broker
+  ports:
+    - "8082:8080"
+  environment:
+    KAFKA_CLUSTERS_0_NAME: "kafka"
+    KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: "broker:9092"
+    KAFKA_CLUSTERS_0_ZOOKEEPER: "zookeeper:2181"
 
-  postgres:
+postgres:
     container_name: postgres
     image: postgres:14.5
     environment:
