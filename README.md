@@ -7,11 +7,16 @@ En el contexto de la implementación del sistema, se presenta el diagrama de la 
 La utilidad Basica de este pipeline es disponibilizar los datos desde archivos de logs, o en un futuro logs en tiempo real. En un data warehouse que permite generar insights al equipo de Data analytics.
 
 Las tecnologias son las siguientes:
+
 - Fluent-bit
 - kafka
 - Python
 - Postgres
 - Docker
+
+## Services: (Mapped Docker Ports)
+
+- Kafka UI (http://localhost:8082)
 
 ---
 
