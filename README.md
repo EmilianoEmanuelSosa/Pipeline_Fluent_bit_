@@ -4,7 +4,14 @@ En el contexto de la implementación del sistema, se presenta el diagrama de la 
 
 ![Fluent Bit Pipeline](./src/pipeline_kafka.gif)
 
-Esta representación visual ofrece una visión detallada del flujo de datos y los procesos asociados con Fluent Bit en la arquitectura actual.
+La utilidad Basica de este pipeline es disponibilizar los datos desde archivos de logs, o en un futuro logs en tiempo real. En un data warehouse que permite generar insights al equipo de Data analytics.
+
+Las tecnologias son las siguientes:
+- Fluent-bit
+- kafka
+- Python
+- Postgres
+- Docker
 
 ---
 
